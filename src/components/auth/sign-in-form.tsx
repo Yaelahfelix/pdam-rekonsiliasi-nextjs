@@ -7,8 +7,6 @@ import { useForm } from "react-hook-form"
 
 import type { SignInSchemaType } from "@/schemas/sign-in-schema"
 
-import { userData } from "@/data/user"
-
 import { SignInSchema } from "@/schemas/sign-in-schema"
 
 import { toast } from "@/hooks/use-toast"
@@ -32,8 +30,8 @@ export function SignInForm() {
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
-      username: userData.username,
-      password: userData.password,
+      username: "",
+      password: "",
     },
   })
 

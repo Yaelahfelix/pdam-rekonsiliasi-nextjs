@@ -15,7 +15,7 @@ export function SignIn() {
       <AuthHeader>
         <AuthTitle>Sign In</AuthTitle>
         <AuthDescription>
-          Enter your email below to sign in to your account
+          Masukkan username dan passwordmu untuk masuk ke dashboard
         </AuthDescription>
       </AuthHeader>
       <AuthForm>
