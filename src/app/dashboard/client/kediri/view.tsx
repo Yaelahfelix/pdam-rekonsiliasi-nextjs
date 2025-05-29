@@ -54,7 +54,7 @@ const View = () => {
   const [data, setData] = useState<Dashboard>()
   useEffect(() => {
     axios.get("/api/client/kediri/dashboard").then((res) => setData(res.data))
-  })
+  }, [])
 
   return (
     <section className="container p-4">

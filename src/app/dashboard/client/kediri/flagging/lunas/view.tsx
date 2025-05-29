@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import axios from "axios"
 import clsx from "clsx"
+import { format } from "date-fns"
 import { toast } from "sonner"
 
 import type { Tagihan } from "@/types/tagihan"
@@ -13,21 +14,24 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ComboboxPelanggan } from "@/components/combobox/pelanggan"
 import { DataTable } from "@/components/data-table"
+import { DatePicker } from "@/components/datepicker"
 import { columns } from "./columns"
 import LunasiModal from "./lunasiModal"
 
 const View = () => {
   const [selectedNopel, setSelectedNopel] = useState("")
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
   const [tagihan, setTagihan] = useState<Tagihan>()
   const searchHandler = async () => {
-    if (!selectedNopel || selectedNopel === "")
-      toast.error("Pelanggan wajib diisi!")
+    if (!selectedNopel || selectedNopel === "" || !selectedDate)
+      return toast.error("Pelanggan dan tanggal bayar wajib diisi!")
     setIsLoading(true)
 
     try {
+      const tglBayar = format(selectedDate, "yyyy-MM-dd")
       const res = await axios.get(
-        "/api/client/kediri/tagihan?nosamb=" + selectedNopel
+        `/api/client/kediri/tagihan?nosamb=${selectedNopel}&tglBayar=${tglBayar}`
       )
       setTagihan(res.data.data)
     } catch (err: any) {
@@ -46,6 +50,11 @@ const View = () => {
       <div className="flex justify-between">
         <div className="flex gap-3">
           <ComboboxPelanggan onSelect={setSelectedNopel} />
+          <DatePicker
+            date={selectedDate}
+            setDate={setSelectedDate}
+            placeHolder="Tanggal Bayar"
+          />
           <ButtonLoading
             onClick={searchHandler}
             disabled={!selectedNopel || selectedNopel === ""}

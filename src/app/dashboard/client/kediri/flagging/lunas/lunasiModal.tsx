@@ -54,6 +54,7 @@ const LunasiModal = ({
     const dataKasir = kasir.find((val) => val.id === parseInt(selectedKasir))
     try {
       await axios.post("/api/client/kediri/tagihan/lunasi", {
+        id_kasir: dataKasir?.id,
         periode,
         no_pelanggan,
         kasir: dataKasir?.nama,

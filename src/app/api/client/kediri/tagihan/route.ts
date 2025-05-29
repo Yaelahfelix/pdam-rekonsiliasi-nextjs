@@ -21,10 +21,11 @@ export async function GET(req: Request) {
 
     const { searchParams } = new URL(req.url)
     const nosamb = searchParams.get("nosamb")
+    const tglBayar = searchParams.get("tglBayar")
 
-    if (!nosamb) {
+    if (!nosamb || !tglBayar) {
       return NextResponse.json(
-        { success: false, message: "nosamb wajib diisi" },
+        { success: false, message: "nosamb dan tglbayar wajib diisi" },
         { status: 400 }
       )
     }
@@ -44,8 +45,8 @@ export async function GET(req: Request) {
     }
 
     const [[tagihanBlmLunas]] = await dbKediri.query<RowDataPacket[]>(
-      "CALL infotag_moba(?)",
-      [nosamb]
+      "CALL infotag_flagging(?,?)",
+      [nosamb, tglBayar]
     )
 
     if (!tagihanBlmLunas.length) {

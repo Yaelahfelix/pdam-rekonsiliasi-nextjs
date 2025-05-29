@@ -1,5 +1,6 @@
 // app/api/bayar-tagihan/route.ts
 import { NextResponse } from "next/server"
+import { authOptions } from "@/config/next-auth"
 import { format } from "date-fns"
 import { getServerSession } from "next-auth"
 
@@ -12,16 +13,17 @@ function compareArrays(a: any[], b: any[]) {
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
     if (!session) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
         { status: 401 }
       )
     }
+    console.log(session)
 
     const body = await req.json()
-    const { periode, no_pelanggan, kasir, loket } = body
+    const { periode, no_pelanggan, kasir, loket, id_kasir } = body
 
     if (!Array.isArray(periode) || !no_pelanggan) {
       return NextResponse.json(
@@ -87,7 +89,6 @@ export async function POST(req: Request) {
 
       for (const tagihan of tagihanList) {
         const kode = `${tagihan.periode}.${tagihan.nosamb}`
-        console.log(kode)
         const updateData = {
           loketbayar: loket,
           tglbayar: tglSkrg,
@@ -135,6 +136,10 @@ export async function POST(req: Request) {
         )
       }
 
+      await conn.query(
+        "INSERT INTO log_flagging_mitra (user_id, namauser, flag, nama_koreksi) VALUES (?,?,?,?)",
+        [id_kasir, kasir, 1, session.user.nama]
+      )
       await conn.commit()
     } catch (err: any) {
       await conn.rollback()

@@ -59,6 +59,31 @@ export const clientKEDIRINavigationsData: NavigationType[] = [
       },
     ],
   },
+
+  {
+    title: "Administrator",
+    items: [
+      {
+        id: "menu1",
+        title: "Menu 1",
+        href: "/dashboard/client/kediri/administrator",
+        iconName: "House",
+      },
+      {
+        id: "menu2",
+        title: "Menu 2",
+        href: "/dashboard/client/kediri/administrator",
+        iconName: "House",
+      },
+      {
+        id: "menu3",
+        title: "Menu 3",
+        href: "/dashboard/client/kediri/administrator",
+        iconName: "House",
+      },
+    ],
+    role: ["admin", "super_admin"],
+  },
 ]
 
 export const clientPROBOLINGGONavigationsData: NavigationType[] = [
