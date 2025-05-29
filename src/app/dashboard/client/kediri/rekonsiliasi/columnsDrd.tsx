@@ -16,13 +16,16 @@ export interface DRD {
 
 export const columnsDRD: ColumnDef<DRD>[] = [
   {
+    accessorKey: "no",
+    header: "No",
+    size: 50,
+    cell: ({ row }) => row.index + 1,
+  },
+  {
     accessorKey: "nama",
     header: "Nama",
   },
-  {
-    accessorKey: "alamat",
-    header: "Alamat",
-  },
+
   {
     accessorKey: "kodegol",
     header: "Golongan",

@@ -1,3 +1,7 @@
+"use client"
+
+import { SessionProvider } from "next-auth/react"
+
 import type { LocaleType } from "@/types"
 import type { ReactNode } from "react"
 
@@ -14,12 +18,14 @@ export function Providers({
   children: ReactNode
 }>) {
   return (
-    <SettingsProvider locale={locale}>
-      <ModeProvider>
-        <ThemeProvider>
-          <SidebarProvider>{children}</SidebarProvider>
-        </ThemeProvider>
-      </ModeProvider>
-    </SettingsProvider>
+    <SessionProvider>
+      <SettingsProvider locale={locale}>
+        <ModeProvider>
+          <ThemeProvider>
+            <SidebarProvider>{children}</SidebarProvider>
+          </ThemeProvider>
+        </ModeProvider>
+      </SettingsProvider>
+    </SessionProvider>
   )
 }

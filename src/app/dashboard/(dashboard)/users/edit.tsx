@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { Pencil } from "lucide-react"
 
 import type { UserSchemaType } from "@/schemas/user-schema"
 
@@ -41,25 +42,33 @@ import MultipleSelector from "@/components/multipleSelect"
 
 // type Props = {}
 
-const CreateUserModal = () => {
+const EditUserModal = ({
+  values,
+  setIsOpen,
+  isOpen,
+}: {
+  values?: UserSchemaType
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isOpen: boolean
+}) => {
   const form = useForm<UserSchemaType>({
     defaultValues: {
-      username: "",
-      nama: "",
+      id: values?.id,
+      username: values?.username || "",
+      nama: values?.nama || "",
       password: "",
-      role: "admin",
-      client_access: undefined,
+      role: values?.role || "user",
+      client_access: values?.client_access || [],
     },
     resolver: zodResolver(UserSchema),
   })
   const role = form.watch("role")
   const Router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const onSubmit = (data: UserSchemaType) => {
     setIsLoading(true)
     axios
-      .post("/api/users", data)
+      .put("/api/users", data)
       .then(() => {
         form.reset()
         toast.success("Berhasil membuat user baru")
@@ -77,11 +86,13 @@ const CreateUserModal = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Create</Button>
+        <Button variant="outline" size={"icon"}>
+          <Pencil className="w-5 h-5" />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Buat user baru</DialogTitle>
+          <DialogTitle>Update data user</DialogTitle>
           <DialogDescription asChild>
             <Form {...form}>
               <form
@@ -173,6 +184,10 @@ const CreateUserModal = () => {
                             onChange={(val) =>
                               field.onChange(val.map((v) => v.value))
                             }
+                            value={field.value?.map((v) => ({
+                              label: v.charAt(0).toUpperCase() + v.slice(1),
+                              value: v,
+                            }))}
                           />
                         </FormControl>
                         <FormMessage />
@@ -185,6 +200,16 @@ const CreateUserModal = () => {
                 )}
 
                 <div className="flex justify-end mt-5">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setIsOpen(false)
+                      form.reset()
+                    }}
+                    className="mr-2"
+                  >
+                    Batal
+                  </Button>
                   <ButtonLoading type="submit" isLoading={isLoading}>
                     Buat
                   </ButtonLoading>
@@ -198,4 +223,4 @@ const CreateUserModal = () => {
   )
 }
 
-export default CreateUserModal
+export default EditUserModal

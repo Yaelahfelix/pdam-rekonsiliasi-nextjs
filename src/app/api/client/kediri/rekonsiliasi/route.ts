@@ -27,8 +27,9 @@ export async function POST(req: Request) {
     )
 
     const [rows2] = await dbKediri.query<RowDataPacket[]>(
-      "SELECT periode, nosamb, nama, alamat, kodegol, total FROM drd WHERE flaglunas = 1 AND tglbayar BETWEEN ? AND ? AND kasir = ?",
-      [body.tgl1, body.tgl2, body.kasir]
+      `SELECT CONCAT(MIN(periode)," - " , MAX(periode)) AS periode , nosamb, nama, alamat, kodegol, SUM(total) AS total FROM drd WHERE flaglunas = 1 AND DATE(tglbayar) BETWEEN ? AND ? AND kasir = ? GROUP BY nosamb ORDER BY nosamb`[
+        (body.tgl1, body.tgl2, body.kasir)
+      ]
     )
 
     return NextResponse.json({ rekonmitra: rows, drd: rows2 }, { status: 200 })

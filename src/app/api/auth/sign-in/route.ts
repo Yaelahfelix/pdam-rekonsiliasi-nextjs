@@ -43,6 +43,8 @@ export async function POST(req: Request) {
         id: userData.id,
         nama: userData.nama,
         username: userData.username,
+        role: userData.role,
+        client_access: userData.client_access,
       },
       { status: 200 }
     )

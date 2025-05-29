@@ -20,9 +20,9 @@ export const navigationsData: NavigationType[] = [
         title: "Users",
         href: "/dashboard/users",
         iconName: "Users",
-        role: ["admin", "superadmin"],
       },
     ],
+    role: ["admin", "super_admin"],
   },
 ]
 
@@ -31,16 +31,25 @@ export const clientKEDIRINavigationsData: NavigationType[] = [
     title: "Main",
     items: [
       {
+        id: "dashboard",
+        title: "Dashboard",
+        href: "/dashboard/client/kediri",
+        iconName: "House",
+      },
+      {
         id: "rekonsiliasi",
         title: "Rekonsiliasi",
         href: "/dashboard/client/kediri/rekonsiliasi",
-        iconName: "House",
+        iconName: "Book",
       },
       {
         id: "flagging",
         title: "Flagging",
-        href: "/dashboard/client/kediri/flagging",
         iconName: "Flag",
+        items: [
+          { title: "Lunas", href: "/dashboard/client/kediri/flagging/lunas" },
+          { title: "Batal", href: "/dashboard/client/kediri/flagging/batal" },
+        ],
       },
       {
         id: "laporan",

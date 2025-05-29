@@ -42,11 +42,7 @@ export function isActivePathname(
 
   // Allow deeper routes to be considered as active.
   // Example: If basePathname is "/dashboard", it should match "/dashboard/stats".
-  return (
-    currentPathname.startsWith(basePathname) &&
-    (currentPathname.length === basePathname.length ||
-      currentPathname[basePathname.length] === "/")
-  )
+  return currentPathname === basePathname
 }
 
 export function formatFileSize(bytes: number, decimals: number = 2) {

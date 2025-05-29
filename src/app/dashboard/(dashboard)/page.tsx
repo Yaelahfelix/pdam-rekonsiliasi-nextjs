@@ -1,5 +1,5 @@
 import View from "./view"
 
-export default function HomePage() {
+export default async function HomePage() {
   return <View />
 }

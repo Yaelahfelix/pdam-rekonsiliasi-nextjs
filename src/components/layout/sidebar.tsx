@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useSession } from "next-auth/react"
 import { ChevronDown } from "lucide-react"
 
 import type {
@@ -43,7 +44,13 @@ export function Sidebar({
   console.log("rerender sidebar")
 
   const pathname = usePathname()
+  const session = useSession()
+  const userRole = session.data?.user?.role || "user"
   const { openMobile, setOpenMobile, isMobile } = useSidebar()
+  const dataNav = navigationsData.filter((nav) => {
+    if (!nav.role) return true
+    return nav.role.includes(userRole)
+  })
   // const { settings } = useSettings()
 
   // const isHoizontalAndDesktop = settings.layout === "horizontal" && !isMobile
@@ -127,7 +134,7 @@ export function Sidebar({
       </SidebarHeader>
       <ScrollArea>
         <SidebarContent className="gap-0">
-          {navigationsData.map((nav) => (
+          {dataNav.map((nav) => (
             <SidebarGroup key={nav.title}>
               <SidebarGroupLabel>{nav.title}</SidebarGroupLabel>
               <SidebarGroupContent>

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -25,6 +26,11 @@ const View = () => {
   const [client, setClient] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const Router = useRouter()
+  const session = useSession()
+  const user = session.data?.user
+  const role = user?.role
+  const isAdmin = role === "admin" || role === "super_admin"
+  const ClientAccess = user?.client_access
   const clientHandler = async () => {
     setIsLoading(true)
     if (client === "kediri") {
@@ -55,11 +61,17 @@ const View = () => {
                 <SelectValue placeholder="Pilih Client" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="kediri">PDAM Kota Kediri</SelectItem>
-                <SelectItem value="probolinggo">
-                  PDAM Kota Probolinggo
-                </SelectItem>
-                <SelectItem value="nganjuk">PDAM Kota Nganjuk</SelectItem>
+                {isAdmin || ClientAccess?.includes("kediri") ? (
+                  <SelectItem value="kediri">PDAM Kota Kediri</SelectItem>
+                ) : null}
+                {isAdmin || ClientAccess?.includes("probolinggo") ? (
+                  <SelectItem value="probolinggo">
+                    PDAM Kota Probolinggo
+                  </SelectItem>
+                ) : null}
+                {isAdmin || ClientAccess?.includes("nganjuk") ? (
+                  <SelectItem value="nganjuk">PDAM Kota Nganjuk</SelectItem>
+                ) : null}
               </SelectContent>
             </Select>
           </CardContent>

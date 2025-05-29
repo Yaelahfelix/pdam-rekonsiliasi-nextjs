@@ -63,6 +63,7 @@ export interface UserType {
 export interface NavigationType {
   title: string
   items: NavigationRootItem[]
+  role?: string[]
 }
 
 export type NavigationRootItem =

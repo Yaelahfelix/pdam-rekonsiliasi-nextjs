@@ -21,6 +21,7 @@ const eslintConfig = [
   ),
   {
     rules: {
+      "@typescript-eslint/no-explicit-any": "off",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-empty-object-type": "off",

@@ -2,8 +2,8 @@ import React from "react"
 
 import View from "./view"
 
-function KediriPage() {
+function FlaggingLunasPage() {
   return <View />
 }
 
-export default KediriPage
+export default FlaggingLunasPage

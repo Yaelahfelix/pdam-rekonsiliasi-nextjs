@@ -20,13 +20,16 @@ export interface RekonMitra {
 
 export const columnsRekon: ColumnDef<RekonMitra>[] = [
   {
+    accessorKey: "no",
+    header: "No",
+    size: 50,
+    cell: ({ row }) => row.index + 1,
+  },
+  {
     accessorKey: "nama",
     header: "Nama",
   },
-  {
-    accessorKey: "alamat",
-    header: "Alamat",
-  },
+
   {
     accessorKey: "golongan",
     header: "Golongan",
